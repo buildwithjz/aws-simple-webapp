@@ -25,7 +25,6 @@ resource "aws_instance" "instance" {
 
   // Do not associate public IP with instance to prevent external access
   associate_public_ip_address = false
-  key_name                    = "john2"
 
   subnet_id              = module.vpc.private_subnets[0]
   vpc_security_group_ids = [aws_security_group.sg.id]
