@@ -3,6 +3,9 @@
 This repository contains a Terraform configuration that demonstrates the creation of a simple, single-page 'Hello World' website hosted in AWS.
 
 The main components of this system are 
+* A VPC with two private subnets and two public subnets
+* A network load balancer spread across the two public subnets
+* An EC2 instance created in one of the private subnets
 
 ## Setup 
 
