@@ -6,13 +6,28 @@ The main components of this system are
 
 ## Setup 
 
-This setup assumes you have an active AWS account. Ensure that your AWS credentials are loaded to your default profile on your local machine. You can verify that AWS is fully set up using
+This setup assumes you have an active AWS account, AWS CLI and terraform installed locally. Ensure that your AWS credentials are loaded to your default profile on your local machine. You can verify that AWS CLI is fully set up using
 
 ```
 $ aws sts get-caller-identity
 ```
 
 Otherwise, refer to the following documentation to get set up with AWS CLI locally: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
+
+Run the following commands to initialise and create the terraform configuration
+
+```
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
+
+Navigate to the load balancer DNS name on your browser to see the message in the site. Note that you will need to skip the certification verification warning (as the SSL certificate used is self-signed). Alternatively, you can use `curl` to test.
+
+```
+$ curl https://(LOAD_BALANACER_DNS_NAME) -k
+Hello World
+```
 
 ## Components
 
@@ -30,7 +45,9 @@ Additionally, to allow incoming traffic from the internet, this setup uses a **n
 
 ### Compute
 
-To serve the webpage, an Ubuntu EC2 instance running nginx is used. The startup script (UserData) that is run when the instance is launched performs the following:
+To serve the webpage, an Ubuntu EC2 instance running nginx is used. The AMI used to select this instance is declared by a terraform variable named `ami_id`. Note that only Ubuntu AMIs are supported.
+
+The startup script (UserData) that is run when the instance is launched performs the following:
 * Ensures that nginx and openssl are installed
 * Creates the site root for a custom site with a `Hello World` in an `index.html` page.
 * Creates a self-signed certificate for the DNS name of the network load balancer
